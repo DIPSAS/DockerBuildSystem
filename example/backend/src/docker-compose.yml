@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  lab-backend-db:
+    image: postgres:latest
+    restart: always
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      POSTGRES_USER: backend
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: backend
+      PGDATA: /var/lib/postgresql/data/backend_data
+    volumes:
+      - lab-backend-pgdata:/var/lib/postgresql/data/backend_data
+    networks:
+      - lab-local-backend-network
+
+  lab-backend-api:
+    image: ${LAB_REPO}dips/lab.backend.api:${LAB_BACKEND_API_TAG}
+    hostname: lab-backend-api
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - lab-backend-db
+    networks:
+      - lab-local-backend-network
+      - lab-backend-network
+
+  lab-backend-migrator:
+    image: ${LAB_REPO}dips/lab.backend.migrator:${LAB_BACKEND_MIGRATOR_TAG}
+    depends_on:
+      - lab-backend-db
+    networks:
+      - lab-local-backend-network
+
+volumes:
+  lab-backend-pgdata:
+
+networks:
+  lab-local-backend-network:
+  lab-backend-network:
+
+
+
+
+
+

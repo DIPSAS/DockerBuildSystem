@@ -1,0 +1,9 @@
+# Run "docker build -f Dockerfile -t <docker_image> ." in powershell to build this Dockerfile locally.
+
+ARG VERSION=1.0.0
+ARG NPM_FEED
+
+RUN npm run packagr
+
+RUN npm config set @dips:registry ${NPM_FEED}]
+RUN npm publish dist

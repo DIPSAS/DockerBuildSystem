@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  lab-backend-tests:
+    image: dips/backendtests
+    container_name: lab-backend-tests
+    build:
+      context: .
+      dockerfile: Dockerfile_Test
+      args:
+        - TEST_FOLDER=UnitTests

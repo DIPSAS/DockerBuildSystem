@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  lab-frontend-web:
+    image: ${LAB_REPO}dips/lab.frontend.dev.web:${LAB_FRONTEND_WEB_TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src

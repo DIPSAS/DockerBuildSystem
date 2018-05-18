@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  lab-backend-api:
+    build:
+      context: .
+      dockerfile: Lab.Backend.API/Dockerfile
+
+  lab-backend-migrator:
+    build:
+      context: .
+      dockerfile: Lab.Backend.Migrator/Dockerfile
+
+
+
+
+
+

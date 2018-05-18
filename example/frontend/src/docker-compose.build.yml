@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  lab-frontend-web:
+    build:
+      context: .
+      dockerfile: Dockerfile_Prod
+    ports:
+      - ${LAB_FRONTEND_PORT}:80

@@ -1,0 +1,11 @@
+# Run "docker build -f Dockerfile -t <docker_image> ." in powershell to build this Dockerfile locally.
+
+FROM microsoft/dotnet:2.0-sdk AS build
+WORKDIR /src
+COPY . .
+
+ARG TEST_FOLDER
+ENV RUN_TEST_FOLDER=$TEST_FOLDER
+
+RUN ls ${RUN_TEST_FOLDER}/*/TestDIPS*.csproj | xargs -I % sh -c 'dotnet build %'
+ENTRYPOINT ls ${RUN_TEST_FOLDER}/*/TestDIPS*.csproj | xargs -I % sh -c 'dotnet test --no-build --no-restore --verbosity normal %'
