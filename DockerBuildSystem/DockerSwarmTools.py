@@ -2,8 +2,9 @@ from DockerBuildSystem import TerminalTools
 import os
 
 
-def DeployStack(composeFile, stackName, environmentVariablesFile = '.env'):
-    TerminalTools.LoadEnvironmentVariables(environmentVariablesFile)
+def DeployStack(composeFile, stackName, environmentVariablesFiles):
+    for environmentVariablesFile in environmentVariablesFiles:
+        TerminalTools.LoadEnvironmentVariables(environmentVariablesFile)
     print("Deploying stack: " + stackName)
     dockerCommand = "docker stack deploy -c " + composeFile + " " + stackName
     TerminalTools.ExecuteTerminalCommands([dockerCommand], True)
