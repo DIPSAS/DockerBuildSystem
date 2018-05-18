@@ -53,7 +53,7 @@ VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "ve
 ```
 
 Please have a look at an example of use here:
-- https://github.com/DIPSAS/DockerBuildSystem/example
+- https://github.com/DIPSAS/DockerBuildSystem/tree/master/example
 
 ## Install And/Or Upgrade
 - pip install --no-cache-dir --upgrade DockerBuildSystem
