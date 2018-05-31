@@ -16,10 +16,13 @@ def DockerComposeBuild(composeFiles):
     TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
-def DockerComposeUp(composeFiles):
+def DockerComposeUp(composeFiles, abortOnContainerExit = True):
     terminalCommand = "docker-compose"
     terminalCommand += MergeComposeFileToTerminalCommand(composeFiles)
-    terminalCommand += " up --abort-on-container-exit"
+    if abortOnContainerExit:
+        terminalCommand += " up --abort-on-container-exit"
+    else:
+        terminalCommand += " up"
     TerminalTools.ExecuteTerminalCommands([terminalCommand], False)
 
 

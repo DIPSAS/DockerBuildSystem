@@ -18,7 +18,14 @@ def PrintAvailableCommands(availableCommands):
 def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False):
     for terminalCommand in terminalCommands:
         print("Executing: " + terminalCommand)
-        returnCode = subprocess.Popen(terminalCommand, shell=True).wait()
+        keyboardInterrupt = False
+        returnCode = 0
+        try:
+            returnCode = subprocess.Popen(terminalCommand, shell=True).wait()
+        except KeyboardInterrupt:
+            keyboardInterrupt = True
+        if keyboardInterrupt and raiseExceptionWithErrorCode:
+            raise Exception("Exception thrown due to keyboardinterrupt")
         if returnCode > 0:
             errorMsg = "Terminal command: '" + terminalCommand + \
                 "' executed with error return code: " + str(returnCode)
