@@ -56,6 +56,18 @@ def RemoveSwarmConfig(configName):
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
 
+def CreateSwarmVolume(volumeName):
+    print("Creating volume: " + volumeName)
+    dockerCommand = "docker volume create " + volumeName
+    TerminalTools.ExecuteTerminalCommands([dockerCommand])
+
+
+def RemoveSwarmVolume(volumeName):
+    print("Removing volume: " + volumeName)
+    dockerCommand = "docker volume rm " + volumeName
+    TerminalTools.ExecuteTerminalCommands([dockerCommand])
+
+
 def StartSwarm():
     print("Starting swarm")
     dockerCommand = "docker swarm init"
