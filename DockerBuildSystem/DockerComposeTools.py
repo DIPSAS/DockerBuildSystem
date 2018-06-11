@@ -54,6 +54,14 @@ def DockerComposePull(composeFiles):
     TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
+def PublishDockerImages(composeFile):
+    dockerComposeStream = open(composeFile, 'r')
+    dockerComposeMap = yaml.safe_load(dockerComposeStream)
+    for service in dockerComposeMap['services']:
+        sourceImage = dockerComposeMap['services'][service]['image']
+        DockerImageTools.PushImage(sourceImage)
+
+
 def PublishDockerImagesWithNewTag(composeFile, newTag):
     dockerComposeStream = open(composeFile, 'r')
     dockerComposeMap = yaml.safe_load(dockerComposeStream)
