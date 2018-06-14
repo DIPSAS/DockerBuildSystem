@@ -86,7 +86,7 @@ def ExecuteComposeTests(composeFiles, testContainerNames):
     print(testContainerName + " container test finished with success.")
 
 
-def CreateNetwork(networkName):
+def CreateLocalNetwork(networkName):
     print("Creating local network: " + networkName)
     dockerCommand = "docker network create "
     dockerCommand += "--attachable "
