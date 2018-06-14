@@ -86,6 +86,14 @@ def ExecuteComposeTests(composeFiles, testContainerNames):
     print(testContainerName + " container test finished with success.")
 
 
+def CreateLocalNetwork(networkName):
+    print("Creating local network: " + networkName)
+    dockerCommand = "docker network create "
+    dockerCommand += "--attachable "
+    dockerCommand += networkName
+    TerminalTools.ExecuteTerminalCommands([dockerCommand])
+
+
 def MergeComposeFileToTerminalCommand(composeFiles):
     terminalCommand = ""
     for composeFile in composeFiles:
