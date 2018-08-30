@@ -73,14 +73,15 @@ def PublishDockerImagesWithNewTag(composeFile, newTag):
         DockerImageTools.PushImage(targetImage)
 
 
-def ExecuteComposeTests(composeFiles, testContainerNames):
+def ExecuteComposeTests(composeFiles, testContainerNames, removeTestContainers = True):
     DockerComposeBuild(composeFiles)
     DockerComposeUp(composeFiles)
     exitCode = 0
     for testContainerName in testContainerNames:
         exitCode = DockerImageTools.GetContainerExitCode(testContainerName)
     DockerComposeDown(composeFiles)
-    DockerComposeRemove(composeFiles)
+    if removeTestContainers:
+        DockerComposeRemove(composeFiles)
     if exitCode > 0:
         raise Exception("Container test '" + testContainerName + "' FAILED!")
     print(testContainerName + " container test finished with success.")
