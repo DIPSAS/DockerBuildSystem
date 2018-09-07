@@ -77,14 +77,22 @@ def ExecuteComposeTests(composeFiles, testContainerNames, removeTestContainers =
     DockerComposeBuild(composeFiles)
     DockerComposeUp(composeFiles)
     exitCode = 0
+    sumExitCodes = 0
+    sumErrorMsgs = ""
     for testContainerName in testContainerNames:
         exitCode = DockerImageTools.GetContainerExitCode(testContainerName)
+        sumExitCodes += exitCode
+        if exitCode > 0:
+            errorMsg = "Container test '" + testContainerName + "' FAILED!\r\n"
+            sumErrorMsgs += errorMsg
+            print(errorMsg)
+        else:
+            print(testContainerName + " container test finished with success.\r\n")
     DockerComposeDown(composeFiles)
     if removeTestContainers:
         DockerComposeRemove(composeFiles)
-    if exitCode > 0:
-        raise Exception("Container test '" + testContainerName + "' FAILED!")
-    print(testContainerName + " container test finished with success.")
+    if sumExitCodes > 0:
+        raise Exception(sumErrorMsgs)
 
 
 def CreateLocalNetwork(networkName):
