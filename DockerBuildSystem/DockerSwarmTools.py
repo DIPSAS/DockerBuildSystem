@@ -21,7 +21,7 @@ def CreateSwarmNetwork(networkName, encrypted = False):
     dockerCommand = "docker network create "
     if encrypted:
         dockerCommand += "--opt encrypted "
-    dockerCommand += "--driver overlay "
+    dockerCommand += "--driver bridge "
     dockerCommand += "--attachable "
     dockerCommand += networkName
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
