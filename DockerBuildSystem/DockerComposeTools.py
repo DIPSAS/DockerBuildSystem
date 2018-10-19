@@ -16,13 +16,15 @@ def DockerComposeBuild(composeFiles):
     TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
-def DockerComposeUp(composeFiles, abortOnContainerExit = True):
+def DockerComposeUp(composeFiles, abortOnContainerExit = True, detached = False):
     terminalCommand = "docker-compose"
     terminalCommand += MergeComposeFileToTerminalCommand(composeFiles)
     if abortOnContainerExit:
         terminalCommand += " up --abort-on-container-exit"
     else:
         terminalCommand += " up"
+        if detached:
+            terminalCommand += " -d"
     TerminalTools.ExecuteTerminalCommands([terminalCommand], False)
 
 
@@ -97,8 +99,7 @@ def ExecuteComposeTests(composeFiles, testContainerNames, removeTestContainers =
 
 def CreateLocalNetwork(networkName):
     print("Creating local network: " + networkName)
-    dockerCommand = "docker network create "
-    dockerCommand += "--attachable "
+    dockerCommand = "docker network create --attachable --driver=bridge "
     dockerCommand += networkName
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
