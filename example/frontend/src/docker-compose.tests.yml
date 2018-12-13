@@ -1,9 +1,0 @@
-version: '3'
-
-services:
-  lab-frontend-tests:
-    image: dips/frontendtests
-    container_name: lab-frontend-tests
-    build:
-      context: .
-      dockerfile: Dockerfile_Test

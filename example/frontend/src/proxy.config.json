@@ -1,8 +1,0 @@
-{
-    "/api/*":{
-        "target":"http://lab-backend-api:80",
-        "secure":false,
-        "logLevel":"debug",
-        "changeOrigin": true
-    }
-}

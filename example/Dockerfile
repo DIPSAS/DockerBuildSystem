@@ -7,8 +7,6 @@ WORKDIR /app
 COPY package.json package-lock.json /app/
 COPY proxy.config.json /app/
 
-RUN ["npm", "config", "set", "@dips:registry", "http://nuget.org/npm/"]
-
 RUN ["npm", "install"]
 
 COPY . /app
