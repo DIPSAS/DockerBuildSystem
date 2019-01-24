@@ -39,3 +39,9 @@ def GetContainerRunningCode(containerName):
     output = TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand)
     running = bool(re.search('true', str(output).lower()))
     return running
+
+
+def CopyFromContainerToHost(containerName, containerSrc, hostDest):
+    terminalCommand = "docker cp " + \
+        containerName + ":" + containerSrc + " " + hostDest
+    TerminalTools.ExecuteTerminalCommands([terminalCommand])
