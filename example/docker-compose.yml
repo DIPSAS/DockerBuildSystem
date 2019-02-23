@@ -2,16 +2,8 @@ version: '3'
 
 services:
   my-service:
-    image: 
+    image: my.service
     container_name: my-service
-    restart: always
-    hostname: my-service
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    networks:
-      - service-network
-
-networks:
-  service-network:
+    build:
+      context: .
+      dockerfile: Dockerfile

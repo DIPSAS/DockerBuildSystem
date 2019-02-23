@@ -35,10 +35,12 @@ def DockerComposeDown(composeFiles):
     TerminalTools.ExecuteTerminalCommands([terminalCommand])
 
 
-def DockerComposeRemove(composeFiles):
+def DockerComposeRemove(composeFiles, force = True):
     terminalCommand = "docker-compose"
     terminalCommand += MergeComposeFileToTerminalCommand(composeFiles)
     terminalCommand += " rm"
+    if force:
+        terminalCommand += " -f"
     TerminalTools.ExecuteTerminalCommands([terminalCommand])
 
 

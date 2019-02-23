@@ -1,16 +1,5 @@
-FROM node
+FROM python:2.7-slim
 
-RUN mkdir -p /app
+COPY ./pythonSnippet.py ./src/pythonSnippet.py
 
-WORKDIR /app
-
-COPY package.json package-lock.json /app/
-COPY proxy.config.json /app/
-
-RUN ["npm", "install"]
-
-COPY . /app
-
-EXPOSE 4200/tcp
-
-CMD ["npm", "start", "--", "--host", "0.0.0.0", "--poll", "500"]
+ENTRYPOINT python ./src/pythonSnippet.py

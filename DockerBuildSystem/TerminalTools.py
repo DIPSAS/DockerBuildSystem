@@ -40,34 +40,10 @@ def ExecuteTerminalCommandAndGetOutput(terminalCommand):
     return output
 
 
-def GetContainerExitCode(containerName):
-    terminalCommand = "docker inspect " + containerName + " --format='{{.State.ExitCode}}'"
-    output = ExecuteTerminalCommandAndGetOutput(terminalCommand)
-    exitCode = GetNumbersFromString(output)[0]
-    return int(exitCode)
-
-
 def GetNumbersFromString(string):
     strNumbers = re.findall(r'\d+', str(string))
     numbers = [int(i) for i in strNumbers]
     return numbers
-
-
-def ExecuteComposeTest(composeFile, testContainerName):
-    terminalCommands = [
-        "docker-compose -f " + composeFile + " build",
-        "docker-compose -f " + composeFile + " up --abort-on-container-exit",
-    ]
-    ExecuteTerminalCommands(terminalCommands)
-    exitCode = GetContainerExitCode(testContainerName)
-    if exitCode > 0:
-        raise Exception("Test FAILED!")
-    print(testContainerName + " container test finished with success.")
-    terminalCommands = [
-        "docker-compose -f " + composeFile + " down",
-        "docker-compose -f " + composeFile + " rm",
-    ]
-    ExecuteTerminalCommands(terminalCommands)
 
 
 def ExportVariableToEnvironment(variable, variableName):
