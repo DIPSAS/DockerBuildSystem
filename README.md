@@ -59,7 +59,7 @@ Please have a look at an example of use here:
 - https://github.com/DIPSAS/DockerBuildSystem/tree/master/example
 
 ## Install And/Or Upgrade
-- pip install --no-cache-dir --upgrade DockerBuildSystem
+- pip install --no-cache --upgrade DockerBuildSystem
 
 ## Prerequisites
 - Docker:
