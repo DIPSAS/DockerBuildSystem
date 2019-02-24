@@ -31,6 +31,13 @@ class TestTerminalTools(unittest.TestCase):
         TerminalTools.ExportVariableToEnvironment(variable, variableName)
         self.assertTrue(variableName in os.environ)
 
+    
+    def test_LoadEnvironmentVariables(self):
+        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
+        TerminalTools.LoadEnvironmentVariables('.env')
+        self.assertTrue('REPO' in os.environ)
+        os.chdir(cwd)
+
 
 if __name__ == '__main__':
     unittest.main()
