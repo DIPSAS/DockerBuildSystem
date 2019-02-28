@@ -2,6 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/DockerBuildSystem.svg)](https://badge.fury.io/py/DockerBuildSystem)
 [![Build Status](https://travis-ci.com/DIPSAS/DockerBuildSystem.svg?branch=master)](https://travis-ci.com/DIPSAS/DockerBuildSystem)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 A simple library for handling docker commands with python.
 
