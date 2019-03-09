@@ -6,6 +6,9 @@
 
 A simple library for handling docker commands with python.
 
+## Install Or Upgrade
+- pip install --upgrade DockerBuildSystem
+
 ## Example
 - Include DockerBuildSystem tools:
 ```python
@@ -59,12 +62,11 @@ VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "ve
 Please have a look at an example of use here:
 - https://github.com/DIPSAS/DockerBuildSystem/tree/master/example
 
-## Install And/Or Upgrade
-- pip install --no-cache --upgrade DockerBuildSystem
-
 ## Prerequisites
 - Docker:
     - https://www.docker.com/get-docker
+- Install Dependencies:
+    - pip install -r requirements.txt
 
 ## Additional Info
 - The pip package may be located at:
