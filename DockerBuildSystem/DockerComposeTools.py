@@ -1,4 +1,5 @@
 import yaml
+import os
 from DockerBuildSystem import TerminalTools, DockerImageTools
 
 
@@ -61,6 +62,7 @@ def DockerComposePull(composeFiles):
 def TagImages(composeFile, newTag):
     dockerComposeStream = open(composeFile, 'r')
     dockerComposeMap = yaml.safe_load(dockerComposeStream)
+    dockerComposeStream.close()
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')
@@ -68,9 +70,23 @@ def TagImages(composeFile, newTag):
         DockerImageTools.TagImage(sourceImage, targetImage)
 
 
+def SaveImages(composeFile, outputFolder):
+    dockerComposeStream = open(composeFile, 'r')
+    dockerComposeMap = yaml.safe_load(dockerComposeStream)
+    dockerComposeStream.close()
+    if not(os.path.isdir(outputFolder)):
+        os.makedirs(outputFolder)
+    for service in dockerComposeMap['services']:
+        sourceImage = dockerComposeMap['services'][service]['image']
+        imageName = sourceImage[sourceImage.rfind('/')+1:].replace(':', '-') + '.tar'
+        outputPath = os.path.join(outputFolder, imageName)
+        DockerImageTools.SaveImage(sourceImage, outputPath)
+
+
 def PublishDockerImages(composeFile):
     dockerComposeStream = open(composeFile, 'r')
     dockerComposeMap = yaml.safe_load(dockerComposeStream)
+    dockerComposeStream.close()
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         DockerImageTools.PushImage(sourceImage)
@@ -79,6 +95,7 @@ def PublishDockerImages(composeFile):
 def PublishDockerImagesWithNewTag(composeFile, newTag):
     dockerComposeStream = open(composeFile, 'r')
     dockerComposeMap = yaml.safe_load(dockerComposeStream)
+    dockerComposeStream.close()
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')

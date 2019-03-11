@@ -37,7 +37,17 @@ class TestDockerComposeTools(unittest.TestCase):
         os.chdir(cwd)
         print('DONE COMPOSE TAG')
 
-    def test_e_ComposeTest(self):
+    def test_e_SaveImages(self):
+        print('COMPOSE SAVE')
+        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
+        folder = os.path.join(os.getcwd(), 'output')
+        print(folder)
+        DockerComposeTools.SaveImages('docker-compose.yml', folder)
+        self.assertTrue(os.path.isfile(os.path.join(folder, 'my.service-tag.tar')))
+        os.chdir(cwd)
+        print('DONE COMPOSE SAVE')
+
+    def test_f_ComposeTest(self):
         print('COMPOSE TEST')
         cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         DockerComposeTools.ExecuteComposeTests(['docker-compose.yml'], ['my-service'])

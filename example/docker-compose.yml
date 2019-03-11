@@ -2,7 +2,7 @@ version: '3'
 
 services:
   my-service:
-    image: my.service
+    image: my_repo/my.service:tag
     container_name: my-service
     build:
       context: .

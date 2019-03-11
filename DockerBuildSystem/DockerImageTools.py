@@ -26,6 +26,11 @@ def TagImage(sourceImage, targetImage):
     TerminalTools.ExecuteTerminalCommands([dockerCommand], True)
 
 
+def SaveImage(imageName, outputPath):
+    dockerCommand = "docker save -o" + outputPath + " " + imageName
+    TerminalTools.ExecuteTerminalCommands([dockerCommand], True)
+
+
 def GetContainerExitCode(containerName):
     terminalCommand = "docker inspect " + containerName + " --format='{{.State.ExitCode}}'"
     output = TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand)
