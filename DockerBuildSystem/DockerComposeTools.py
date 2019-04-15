@@ -20,12 +20,11 @@ def DockerComposeBuild(composeFiles):
 def DockerComposeUp(composeFiles, abortOnContainerExit = True, detached = False):
     terminalCommand = "docker-compose"
     terminalCommand += MergeComposeFileToTerminalCommand(composeFiles)
-    if abortOnContainerExit:
-        terminalCommand += " up --abort-on-container-exit"
-    else:
-        terminalCommand += " up"
-        if detached:
-            terminalCommand += " -d"
+    terminalCommand += " up"
+    if detached:
+        terminalCommand += " -d"
+    elif abortOnContainerExit:
+        terminalCommand += " --abort-on-container-exit"
     TerminalTools.ExecuteTerminalCommands([terminalCommand], False)
 
 
