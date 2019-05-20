@@ -27,7 +27,7 @@ def TagImage(sourceImage, targetImage):
 
 
 def SaveImage(imageName, outputPath):
-    dockerCommand = "docker save -o" + outputPath + " " + imageName
+    dockerCommand = "docker save -o " + outputPath + " " + imageName
     TerminalTools.ExecuteTerminalCommands([dockerCommand], True)
 
 

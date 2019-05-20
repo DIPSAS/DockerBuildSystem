@@ -18,6 +18,10 @@ class TestDockerSwarmTools(unittest.TestCase):
         cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         DockerSwarmTools.CreateSwarmNetwork(network)
         DockerSwarmTools.RemoveSwarmNetwork(network)
+
+        DockerSwarmTools.CreateSwarmNetwork(network, encrypted=True, driver="overlay", attachable=False, options=['--ipv6'])
+        DockerSwarmTools.RemoveSwarmNetwork(network)
+        
         os.chdir(cwd)
         print('DONE CREATE NETWORK')
 
@@ -45,6 +49,10 @@ class TestDockerSwarmTools(unittest.TestCase):
         cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         DockerSwarmTools.CreateSwarmVolume(volume)
         DockerSwarmTools.RemoveSwarmVolume(volume)
+
+        DockerSwarmTools.CreateSwarmVolume(volume, driver='local')
+        DockerSwarmTools.RemoveSwarmVolume(volume)
+
         os.chdir(cwd)
         print('DONE CREATE VOLUME')
 

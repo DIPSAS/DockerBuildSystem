@@ -16,13 +16,16 @@ def RemoveStack(stackName):
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
 
-def CreateSwarmNetwork(networkName, encrypted = False):
+def CreateSwarmNetwork(networkName, encrypted = False, driver = 'overlay', attachable = True, options = []):
     print("Creating network: " + networkName)
     dockerCommand = "docker network create "
+    dockerCommand += "--driver {0} ".format(driver)
+    if attachable:
+        dockerCommand += "--attachable "
     if encrypted:
         dockerCommand += "--opt encrypted "
-    dockerCommand += "--driver overlay "
-    dockerCommand += "--attachable "
+    for option in options:
+        dockerCommand += "{0} ".format(option)
     dockerCommand += networkName
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
@@ -57,9 +60,12 @@ def RemoveSwarmConfig(configName):
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
 
-def CreateSwarmVolume(volumeName):
-    print("Creating volume: " + volumeName)
-    dockerCommand = "docker volume create " + volumeName
+def CreateSwarmVolume(volumeName, driver = 'local', driverOptions = []):
+    print("Creating volume: {0}, with driver: {1} and driver options: {2}".format(volumeName, driver, driverOptions))
+    dockerCommand = "docker volume create --driver {0}".format(driver)
+    for driverOption in driverOptions:
+        dockerCommand += " --opt {0}".format(driverOption)
+    dockerCommand += ' {0}'.format(volumeName)
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
 
