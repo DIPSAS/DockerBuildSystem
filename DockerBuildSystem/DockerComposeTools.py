@@ -6,7 +6,7 @@ from DockerBuildSystem import TerminalTools, DockerImageTools
 def MergeComposeFiles(composeFiles, outputComposeFile):
     terminalCommand = "docker-compose"
     terminalCommand += MergeComposeFileToTerminalCommand(composeFiles)
-    terminalCommand += " config>" + outputComposeFile
+    terminalCommand += " config > " + outputComposeFile
     TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
