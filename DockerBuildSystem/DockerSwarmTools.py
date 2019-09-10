@@ -2,7 +2,7 @@ from DockerBuildSystem import TerminalTools
 import os
 
 
-def DeployStack(composeFile, stackName, environmentVariablesFiles):
+def DeployStack(composeFile, stackName, environmentVariablesFiles = []):
     for environmentVariablesFile in environmentVariablesFiles:
         TerminalTools.LoadEnvironmentVariables(environmentVariablesFile)
     print("Deploying stack: " + stackName)

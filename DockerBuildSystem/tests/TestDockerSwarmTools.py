@@ -61,7 +61,7 @@ class TestDockerSwarmTools(unittest.TestCase):
         stack = 'test-stack-' + str(random.randint(0, 10000))
         cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         DockerComposeTools.DockerComposeBuild(['docker-compose.yml'])
-        DockerSwarmTools.DeployStack('docker-compose.yml', stack, [])
+        DockerSwarmTools.DeployStack('docker-compose.yml', stack)
         DockerSwarmTools.RemoveStack(stack)
         os.chdir(cwd)
         print('DONE CREATE STACK')
