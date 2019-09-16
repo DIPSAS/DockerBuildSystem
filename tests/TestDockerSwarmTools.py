@@ -1,9 +1,9 @@
 import unittest
 import random
 import os
-from . import TestTools
-from .. import DockerSwarmTools
-from .. import DockerComposeTools
+from tests import TestTools
+from DockerBuildSystem import DockerSwarmTools
+from DockerBuildSystem import DockerComposeTools
 
 class TestDockerSwarmTools(unittest.TestCase):
 

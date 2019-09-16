@@ -1,7 +1,7 @@
 import unittest
 import os
-from . import TestTools
-from .. import VersionTools
+from tests import TestTools
+from DockerBuildSystem import VersionTools
 
 class TestVersionTools(unittest.TestCase):
 

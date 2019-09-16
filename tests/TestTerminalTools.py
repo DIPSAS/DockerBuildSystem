@@ -1,7 +1,7 @@
 import unittest
 import os
-from . import TestTools
-from .. import TerminalTools
+from tests import TestTools
+from DockerBuildSystem import TerminalTools
 
 class TestTerminalTools(unittest.TestCase):
 

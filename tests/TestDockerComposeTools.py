@@ -1,8 +1,8 @@
 import unittest
 import random
 import os
-from . import TestTools
-from .. import DockerComposeTools
+from tests import TestTools
+from DockerBuildSystem import DockerComposeTools
 
 TEST_IMAGE = 'test.image'
 TEST_CONTAINER_NAME = 'test-container-' + str(random.randint(0, 100000))

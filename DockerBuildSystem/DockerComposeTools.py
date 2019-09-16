@@ -1,6 +1,5 @@
-import yaml
 import os
-from DockerBuildSystem import TerminalTools, DockerImageTools
+from DockerBuildSystem import TerminalTools, DockerImageTools, YamlTools
 
 
 def MergeComposeFiles(composeFiles, outputComposeFile):
@@ -59,9 +58,7 @@ def DockerComposePull(composeFiles):
 
 
 def TagImages(composeFile, newTag):
-    dockerComposeStream = open(composeFile, 'r')
-    dockerComposeMap = yaml.safe_load(dockerComposeStream)
-    dockerComposeStream.close()
+    dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')
@@ -70,9 +67,7 @@ def TagImages(composeFile, newTag):
 
 
 def SaveImages(composeFile, outputFolder):
-    dockerComposeStream = open(composeFile, 'r')
-    dockerComposeMap = yaml.safe_load(dockerComposeStream)
-    dockerComposeStream.close()
+    dockerComposeMap = YamlTools.GetYamlData([composeFile])
     if not(os.path.isdir(outputFolder)):
         os.makedirs(outputFolder)
     for service in dockerComposeMap['services']:
@@ -83,18 +78,14 @@ def SaveImages(composeFile, outputFolder):
 
 
 def PublishDockerImages(composeFile):
-    dockerComposeStream = open(composeFile, 'r')
-    dockerComposeMap = yaml.safe_load(dockerComposeStream)
-    dockerComposeStream.close()
+    dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         DockerImageTools.PushImage(sourceImage)
 
 
 def PublishDockerImagesWithNewTag(composeFile, newTag):
-    dockerComposeStream = open(composeFile, 'r')
-    dockerComposeMap = yaml.safe_load(dockerComposeStream)
-    dockerComposeStream.close()
+    dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')
@@ -106,7 +97,6 @@ def PublishDockerImagesWithNewTag(composeFile, newTag):
 def ExecuteComposeTests(composeFiles, testContainerNames, removeTestContainers = True):
     DockerComposeBuild(composeFiles)
     DockerComposeUp(composeFiles)
-    exitCode = 0
     sumExitCodes = 0
     sumErrorMsgs = ""
     for testContainerName in testContainerNames:
