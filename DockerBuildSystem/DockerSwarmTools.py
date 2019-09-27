@@ -1,4 +1,5 @@
 from DockerBuildSystem import TerminalTools
+import subprocess
 
 
 def DeployStack(composeFile, stackName, environmentVariablesFiles = []):
@@ -74,7 +75,17 @@ def RemoveSwarmVolume(volumeName):
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
 
 
+def SwarmIsInitiated():
+    terminalCommand = "docker node inspect self --pretty"
+    returnCode = subprocess.Popen(terminalCommand, shell=True).wait()
+    return returnCode == 0
+
+
 def StartSwarm():
+    if SwarmIsInitiated():
+        print("Swarm is already initiated.")
+        return
+
     print("Starting swarm")
     dockerCommand = "docker swarm init"
     TerminalTools.ExecuteTerminalCommands([dockerCommand])
