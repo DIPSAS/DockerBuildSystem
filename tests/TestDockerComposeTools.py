@@ -2,7 +2,7 @@ import unittest
 import random
 import os
 from tests import TestTools
-from DockerBuildSystem import DockerComposeTools
+from DockerBuildSystem import DockerComposeTools, YamlTools, DockerImageTools
 
 TEST_IMAGE = 'test.image'
 TEST_CONTAINER_NAME = 'test-container-' + str(random.randint(0, 100000))
@@ -53,6 +53,21 @@ class TestDockerComposeTools(unittest.TestCase):
         DockerComposeTools.ExecuteComposeTests(['docker-compose.yml'], ['my-service'])
         os.chdir(cwd)
         print('DONE COMPOSE TEST')
+
+    def test_f_AddDigestsToImageTags(self):
+        print('COMPOSE ADD DIGESTS')
+        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
+        DockerImageTools.PullImage('nginx')
+        os.makedirs('output', exist_ok=True)
+        DockerComposeTools.AddDigestsToImageTags(['docker-compose.yml'], 'output/docker-compose.digests.yml')
+        yamlData = YamlTools.GetYamlData(['output/docker-compose.digests.yml'])
+        for service in yamlData['services']:
+            if 'my.service' in yamlData['services'][service]['image']:
+                self.assertEqual('my_repo/my.service:tag', yamlData['services'][service]['image'])
+            else:
+                self.assertTrue('nginx@sha256:' in yamlData['services'][service]['image'])
+        os.chdir(cwd)
+        print('DONE COMPOSE ADD DIGESTS')
 
 
 if __name__ == '__main__':
