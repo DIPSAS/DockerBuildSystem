@@ -45,7 +45,10 @@ class TestDockerComposeTools(unittest.TestCase):
     def test_f_AddDigestsToImageTags(self):
         print('COMPOSE ADD DIGESTS')
         DockerImageTools.PullImage('nginx')
-        os.makedirs(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output'), exist_ok=True)
+        outputFolder = os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output')
+        if not(os.path.isdir(outputFolder)):
+            os.makedirs(outputFolder)
+
         DockerComposeTools.AddDigestsToImageTags([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')], os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/docker-compose.digests.yml'))
         yamlData = YamlTools.GetYamlData([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/docker-compose.digests.yml')])
         for service in yamlData['services']:
