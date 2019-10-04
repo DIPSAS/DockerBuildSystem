@@ -38,7 +38,11 @@ class TestDockerImageTools(unittest.TestCase):
 
     def test_f_CopyFromContainerToHost(self):
         print('COPY FROM CONTAINER TO HOST')
-        DockerImageTools.CopyFromContainerToHost(TEST_CONTAINER_NAME, 'src/', os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/'))
+        outputFolder = os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/')
+        if not (os.path.isdir(outputFolder)):
+            os.makedirs(outputFolder)
+
+        DockerImageTools.CopyFromContainerToHost(TEST_CONTAINER_NAME, 'src/', outputFolder)
         print(os.listdir(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/src')))
         self.assertTrue(os.path.isfile(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/src/pythonSnippet.py')))
         print('DONE COPY FROM CONTAINER TO HOST')
