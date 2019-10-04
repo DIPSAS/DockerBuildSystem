@@ -138,6 +138,6 @@ def AddDigestsToImageTags(composeFiles, outputComposeFile):
         imageName = yamlData['services'][service]['image']
         repoDigests = DockerImageTools.GetImageInfo(imageName)['RepoDigests']
         if len(repoDigests) > 0:
-            yamlData['services'][service]['image'] = repoDigests[0]
+            yamlData['services'][service]['image'] = str(repoDigests[0])
 
     YamlTools.DumpYamlDataToFile(yamlData, outputComposeFile)
