@@ -11,47 +11,35 @@ class TestDockerImageTools(unittest.TestCase):
 
     def test_a_BuildImage(self):
         print('BUILD IMAGE')
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
-        DockerImageTools.BuildImage(TEST_IMAGE)
-        os.chdir(cwd)
+        DockerImageTools.BuildImage(TEST_IMAGE, dockerfile=os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'Dockerfile'), context=TestTools.TEST_SAMPLE_FOLDER)
         print('DONE BUILD IMAGE')
 
     def test_b_RunImage(self):
         print('RUN IMAGE')
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         DockerImageTools.RunImage(TEST_IMAGE, '--name ' + TEST_CONTAINER_NAME)
-        os.chdir(cwd)
         print('DONE RUN IMAGE')
 
     def test_c_GetContainerExitCode(self):
         print('CONTAINER EXIT CODE')
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         exitCode = DockerImageTools.GetContainerExitCode(TEST_CONTAINER_NAME)
         self.assertEqual(exitCode, 0)
-        os.chdir(cwd)
         print('DONE CONTAINER EXIT CODE')
 
     def test_d_GetContainerRunningCode(self):
         print('CONTAINER RUNNING CODE')
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         running = DockerImageTools.GetContainerRunningCode(TEST_CONTAINER_NAME)
         self.assertEqual(running, False)
-        os.chdir(cwd)
         print('DONE CONTAINER RUNNING CODE')
 
     def test_e_TagImage(self):
         print('TAG IMAGE')
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
         DockerImageTools.TagImage(TEST_IMAGE, TEST_IMAGE + ':1.0.0')
-        os.chdir(cwd)
         print('DONE TAG IMAGE')
 
     def test_f_CopyFromContainerToHost(self):
         print('COPY FROM CONTAINER TO HOST')
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
-        DockerImageTools.CopyFromContainerToHost(TEST_CONTAINER_NAME, 'src/', 'output/')
-        self.assertTrue(os.path.isfile('output/src/pythonSnippet.py'))
-        os.chdir(cwd)
+        DockerImageTools.CopyFromContainerToHost(TEST_CONTAINER_NAME, 'src/', os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/'))
+        self.assertTrue(os.path.isfile(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/src/pythonSnippet.py')))
         print('DONE COPY FROM CONTAINER TO HOST')
 
     def test_g_GetImageRepoDigest(self):

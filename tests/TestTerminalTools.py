@@ -12,10 +12,9 @@ class TestTerminalTools(unittest.TestCase):
 
 
     def test_ExecuteTerminalCommands(self):
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
-        cmd = 'python ./pythonSnippet.py'
+        pyFile = os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'pythonSnippet.py')
+        cmd = 'python ./{0}'.format(pyFile)
         TerminalTools.ExecuteTerminalCommands([cmd], True)
-        os.chdir(cwd)
 
 
     def test_ExecuteTerminalCommandAndGetOutput(self):
@@ -33,10 +32,8 @@ class TestTerminalTools(unittest.TestCase):
 
     
     def test_LoadEnvironmentVariables(self):
-        cwd = TestTools.ChangeToSampleFolderAndGetCwd()
-        TerminalTools.LoadEnvironmentVariables('.env')
+        TerminalTools.LoadEnvironmentVariables(os.path.join(TestTools.TEST_SAMPLE_FOLDER, '.env'))
         self.assertTrue('REPO' in os.environ)
-        os.chdir(cwd)
 
 
 if __name__ == '__main__':
