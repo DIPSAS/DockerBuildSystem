@@ -1,0 +1,5 @@
+version: '3'
+
+services:
+  my-service:
+    container_name: new-my-service

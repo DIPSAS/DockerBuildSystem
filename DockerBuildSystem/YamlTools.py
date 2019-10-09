@@ -4,9 +4,15 @@ import os
 
 
 def GetYamlData(yamlFiles, ignoreEmptyYamlData = False, infoMsgOnError = None, replaceEnvironmentVariablesMatches = True):
-    yamlStrings = ""
+    yamlData = {}
     for yamlFile in yamlFiles:
-        yamlStrings += GetYamlString(yamlFile)
+        newYamlData = GetSingleYamlData(yamlFile, ignoreEmptyYamlData, infoMsgOnError, replaceEnvironmentVariablesMatches)
+        yamlData = MergeYamlData(yamlData, newYamlData)
+    return yamlData
+
+
+def GetSingleYamlData(yamlFile, ignoreEmptyYamlData = False, infoMsgOnError = None, replaceEnvironmentVariablesMatches = True):
+    yamlStrings = GetYamlString(yamlFile)
     if replaceEnvironmentVariablesMatches:
         yamlStrings = ReplaceEnvironmentVariablesMatches(yamlStrings)
     yamlData = yaml.safe_load(yamlStrings)
@@ -19,6 +25,18 @@ def GetYamlData(yamlFiles, ignoreEmptyYamlData = False, infoMsgOnError = None, r
             errorMsg += infoMsgOnError
         raise Exception(errorMsg)
     return yamlData
+
+
+def MergeYamlData(yamlData1, yamlData2):
+    for key in yamlData2:
+        if key in yamlData1:
+            if isinstance(yamlData1[key], dict) and isinstance(yamlData2[key], dict):
+                MergeYamlData(yamlData1[key], yamlData2[key])
+            else:
+                yamlData1[key] = yamlData2[key]
+        else:
+            yamlData1[key] = yamlData2[key]
+    return yamlData1
 
 
 def ReplaceEnvironmentVariablesMatches(yamlString):
