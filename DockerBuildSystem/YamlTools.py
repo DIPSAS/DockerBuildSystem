@@ -49,7 +49,7 @@ def DumpYamlDataToFile(yamlData, yamlFile):
 def CreateFoldersInPath(filename):
     basename = os.path.basename(filename)
     dirs = filename[:filename.find(basename)]
-    if not(os.path.isdir(dirs)):
+    if len(dirs) > 0 and not(os.path.exists(dirs)):
         os.makedirs(dirs)
 
 
