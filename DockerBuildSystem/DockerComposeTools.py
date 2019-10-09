@@ -130,14 +130,17 @@ def MergeComposeFileToTerminalCommand(composeFiles):
 
 
 def AddDigestsToImageTags(composeFiles, outputComposeFile):
-    yamlData = YamlTools.GetYamlData(composeFiles)
+    yamlData = YamlTools.GetYamlData(composeFiles, replaceEnvironmentVariablesMatches = False)
     for service in yamlData.get('services', []):
         if not('image' in yamlData['services'][service]):
             continue
 
         imageName = yamlData['services'][service]['image']
+        imageName = YamlTools.ReplaceEnvironmentVariablesMatches(imageName)
         repoDigests = DockerImageTools.GetImageInfo(imageName)['RepoDigests']
         if len(repoDigests) > 0:
             yamlData['services'][service]['image'] = str(repoDigests[0])
+        else:
+            yamlData['services'][service]['image'] = imageName
 
     YamlTools.DumpYamlDataToFile(yamlData, outputComposeFile)

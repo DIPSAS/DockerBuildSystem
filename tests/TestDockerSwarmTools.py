@@ -3,7 +3,7 @@ import random
 import os
 from tests import TestTools
 from DockerBuildSystem import DockerSwarmTools
-from DockerBuildSystem import DockerComposeTools
+from DockerBuildSystem import DockerComposeTools, TerminalTools
 
 class TestDockerSwarmTools(unittest.TestCase):
 
@@ -51,6 +51,7 @@ class TestDockerSwarmTools(unittest.TestCase):
     def test_f_CreateRemoveStack(self):
         print('CREATE STACK')
         stack = 'test-stack-' + str(random.randint(0, 10000))
+        TerminalTools.LoadEnvironmentVariables(os.path.join(TestTools.TEST_SAMPLE_FOLDER, '.env'))
         DockerComposeTools.DockerComposeBuild([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')])
         DockerSwarmTools.DeployStack(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml'), stack)
         DockerSwarmTools.RemoveStack(stack)

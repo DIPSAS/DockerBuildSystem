@@ -3,11 +3,12 @@ import re
 import os
 
 
-def GetYamlData(yamlFiles, ignoreEmptyYamlData = False, infoMsgOnError = None):
+def GetYamlData(yamlFiles, ignoreEmptyYamlData = False, infoMsgOnError = None, replaceEnvironmentVariablesMatches = True):
     yamlStrings = ""
     for yamlFile in yamlFiles:
         yamlStrings += GetYamlString(yamlFile)
-    yamlStrings = ReplaceEnvironmentVariablesMatches(yamlStrings)
+    if replaceEnvironmentVariablesMatches:
+        yamlStrings = ReplaceEnvironmentVariablesMatches(yamlStrings)
     yamlData = yaml.safe_load(yamlStrings)
     if yamlData == None:
         if ignoreEmptyYamlData:

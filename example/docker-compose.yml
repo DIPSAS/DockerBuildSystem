@@ -2,11 +2,15 @@ version: '3'
 
 services:
   my-service:
-    image: my_repo/my.service:tag
+    image: my_repo/my.service:${VERSION}
     container_name: my-service
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      SOME_VARIABLE: ${SOME_ENV_VARIABLE}
 
   nginx-service:
     image: nginx
+    environment:
+      SOME_VARIABLE: ${SOME_ENV_VARIABLE}
