@@ -39,7 +39,7 @@ class TestDockerComposeTools(unittest.TestCase):
         print(folder)
         TerminalTools.LoadEnvironmentVariables(os.path.join(TestTools.TEST_SAMPLE_FOLDER, '.env'))
         DockerComposeTools.SaveImages(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml'), folder)
-        self.assertTrue(os.path.isfile(os.path.join(folder, 'my.service-tag.tar')))
+        self.assertTrue(os.path.isfile(os.path.join(folder, 'my.service-1.0.0.tar')))
         print('DONE COMPOSE SAVE')
 
     def test_f_ComposeTest(self):
