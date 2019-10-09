@@ -20,6 +20,9 @@ class TestYamlTools(unittest.TestCase):
         self.assertTrue('my-service' in YamlTools.GetProperties('services', yamlData))
         self.assertTrue('my_repo/my.service:1.0.0' == yamlData['services']['my-service']['image'])
         self.assertTrue('new-my-service' == yamlData['services']['my-service']['container_name'])
+        self.assertTrue(len(yamlData['services']['my-service']['networks']) == 2)
+        self.assertTrue('new_network' in yamlData['services']['my-service']['networks'])
+        self.assertTrue('backend_network' in yamlData['services']['my-service']['networks'])
         YamlTools.DumpYamlDataToFile(yamlData, os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output', 'docker-compose.merged.yml'))
 
 

@@ -32,6 +32,10 @@ def MergeYamlData(yamlData1, yamlData2):
         if key in yamlData1:
             if isinstance(yamlData1[key], dict) and isinstance(yamlData2[key], dict):
                 MergeYamlData(yamlData1[key], yamlData2[key])
+            elif isinstance(yamlData1[key], list) and isinstance(yamlData2[key], list):
+                for listValue in yamlData2[key]:
+                    if not(listValue in yamlData1[key]):
+                        yamlData1[key].append(listValue)
             else:
                 yamlData1[key] = yamlData2[key]
         else:

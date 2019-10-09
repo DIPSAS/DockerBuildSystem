@@ -3,3 +3,9 @@ version: '3'
 services:
   my-service:
     container_name: new-my-service
+    networks:
+      - new_network
+      - backend_network
+
+networks:
+  new_network:

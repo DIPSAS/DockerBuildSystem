@@ -4,6 +4,8 @@ services:
   my-service:
     image: ${REPO}my.service:${VERSION}
     container_name: my-service
+    networks:
+      - backend_network
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,3 +16,6 @@ services:
     image: nginx
     environment:
       SOME_VARIABLE: ${SOME_ENV_VARIABLE}
+
+networks:
+  backend_network:
