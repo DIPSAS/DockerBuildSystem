@@ -8,6 +8,11 @@ def LoadEnvironmentVariables(environmentVariablesFile):
     load_dotenv(environmentVariablesFile)
 
 
+def LoadDefaultEnvironmentVariablesFile(defaultEnvFile = '.env'):
+    if os.path.isfile(defaultEnvFile):
+        LoadEnvironmentVariables(defaultEnvFile)
+
+
 def PrintAvailableCommands(availableCommands):
     for availableCommand in availableCommands:
         print(availableCommand)

@@ -130,6 +130,7 @@ def MergeComposeFileToTerminalCommand(composeFiles):
 
 
 def AddDigestsToImageTags(composeFiles, outputComposeFile):
+    TerminalTools.LoadDefaultEnvironmentVariablesFile()
     yamlData = YamlTools.GetYamlData(composeFiles, replaceEnvironmentVariablesMatches = False)
     for service in yamlData.get('services', []):
         if not('image' in yamlData['services'][service]):

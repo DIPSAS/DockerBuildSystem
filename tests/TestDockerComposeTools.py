@@ -51,13 +51,9 @@ class TestDockerComposeTools(unittest.TestCase):
     def test_f_AddDigestsToImageTags(self):
         print('COMPOSE ADD DIGESTS')
         DockerImageTools.PullImage('nginx')
-        outputFolder = os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output')
-        if not(os.path.isdir(outputFolder)):
-            os.makedirs(outputFolder)
-
         TerminalTools.LoadEnvironmentVariables(os.path.join(TestTools.TEST_SAMPLE_FOLDER, '.env'))
-        DockerComposeTools.AddDigestsToImageTags([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')], os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/docker-compose.digests.yml'))
-        yamlData = YamlTools.GetYamlData([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/docker-compose.digests.yml')], replaceEnvironmentVariablesMatches = False)
+        DockerComposeTools.AddDigestsToImageTags([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')], os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/digest/docker-compose.digests.yml'))
+        yamlData = YamlTools.GetYamlData([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/digest/docker-compose.digests.yml')], replaceEnvironmentVariablesMatches = False)
         for service in yamlData['services']:
             if 'my.service' in yamlData['services'][service]['image']:
                 self.assertEqual('my_repo/my.service:1.0.0', yamlData['services'][service]['image'])

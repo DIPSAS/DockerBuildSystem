@@ -41,8 +41,16 @@ def GetYamlString(yamlFile):
 
 def DumpYamlDataToFile(yamlData, yamlFile):
     yamlDump = yaml.dump(yamlData)
+    CreateFoldersInPath(yamlFile)
     with open(yamlFile, 'w') as f:
         f.write(yamlDump)
+
+
+def CreateFoldersInPath(filename):
+    basename = os.path.basename(filename)
+    dirs = filename[:filename.find(basename)]
+    if not(os.path.isdir(dirs)):
+        os.makedirs(dirs)
 
 
 def TryGetFromDictionary(dictionary, key, defaultValue):
