@@ -55,10 +55,18 @@ class TestDockerImageTools(unittest.TestCase):
         self.assertFalse('\n' in repoDigest)
         print('DONE GET IMAGE REPO DIGEST')
 
+    def test_h_GetImageLabels(self):
+        print('GET IMAGE LABELS')
+        labels = DockerImageTools.GetImageLabels(TEST_IMAGE)
+        self.assertGreater(len(labels), 0)
+        self.assertTrue('owner', labels)
+        self.assertTrue(labels['owner'] == 'example owner')
+        print('DONE GET IMAGE LABELS')
+
     def test_h_GetImageLabel(self):
         print('GET IMAGE LABEL')
-        labelValue = DockerImageTools.GetImageLabel(TEST_IMAGE, 'owner')
-        self.assertEqual('example owner', labelValue)
+        labelValue = DockerImageTools.GetImageLabel(TEST_IMAGE, 'org.opencontainers.image.version')
+        self.assertEqual('1.0.0', labelValue)
 
         labelValue = DockerImageTools.GetImageLabel(TEST_IMAGE, 'none_existent')
         self.assertEqual('<no value>', labelValue)
@@ -67,6 +75,8 @@ class TestDockerImageTools(unittest.TestCase):
     def test_i_CheckImageLabelExists(self):
         print('CHECK IMAGE LABEL EXISTS')
         exists = DockerImageTools.CheckImageLabelExists(TEST_IMAGE, 'owner')
+        self.assertTrue(exists)
+        exists = DockerImageTools.CheckImageLabelExists(TEST_IMAGE, 'org.opencontainers.image.version')
         self.assertTrue(exists)
 
         exists = DockerImageTools.CheckImageLabelExists(TEST_IMAGE, 'none_existent')

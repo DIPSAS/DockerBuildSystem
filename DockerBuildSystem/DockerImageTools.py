@@ -59,12 +59,17 @@ def GetImageRepoDigest(imageName):
     return repoDigest
 
 
+def GetImageLabels(imageName):
+    jsonInfo = GetImageInfo(imageName)
+    labels = jsonInfo['ContainerConfig']['Labels']
+    return labels
+
+
 def GetImageLabel(imageName, labelKey):
-    terminalCommand = "docker inspect --format=\"{{.Config.Labels." + labelKey + "}}\" " + imageName
-    labelValue = str(TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand).decode("utf-8"))
-    if len(labelValue) > 0 and labelValue[-1] == '\n':
-        labelValue = labelValue[:-1]
-    return labelValue
+    labels = GetImageLabels(imageName)
+    if labelKey in labels:
+        return labels[labelKey]
+    return '<no value>'
 
 
 def CheckImageLabelExists(imageName, labelKey):
