@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  my-service:
+    image: ${REPO}my.service:${VERSION}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SOME_VARIABLE: ${SOME_ENV_VARIABLE}

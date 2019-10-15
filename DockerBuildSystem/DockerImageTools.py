@@ -92,3 +92,9 @@ def GetImageInfo(imageName):
 
 def GetContainerInfo(containerName):
     return GetImageInfo(containerName)
+
+
+def GetLogsFromContainer(containerName):
+    terminalCommand = 'docker logs {0}'.format(containerName)
+    logs = str(TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand).decode("utf-8"))
+    return logs

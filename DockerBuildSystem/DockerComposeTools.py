@@ -1,4 +1,5 @@
 import os
+import random
 from DockerBuildSystem import TerminalTools, DockerImageTools, YamlTools
 
 
@@ -94,7 +95,12 @@ def PublishDockerImagesWithNewTag(composeFile, newTag):
         DockerImageTools.PushImage(targetImage)
 
 
-def ExecuteComposeTests(composeFiles, testContainerNames, removeTestContainers = True):
+def ExecuteComposeTests(composeFiles, testContainerNames = None, removeTestContainers = True):
+    if testContainerNames is None:
+        TerminalTools.LoadDefaultEnvironmentVariablesFile()
+        yamlData = YamlTools.GetYamlData(composeFiles)
+        testContainerNames = GetContainerNames(yamlData)
+
     DockerComposeBuild(composeFiles)
     DockerComposeUp(composeFiles)
     sumExitCodes = 0
@@ -129,9 +135,7 @@ def MergeComposeFileToTerminalCommand(composeFiles):
     return terminalCommand
 
 
-def AddDigestsToImageTags(composeFiles, outputComposeFile):
-    TerminalTools.LoadDefaultEnvironmentVariablesFile()
-    yamlData = YamlTools.GetYamlData(composeFiles, replaceEnvironmentVariablesMatches = False)
+def AddDigestsToImageTags(yamlData):
     for service in yamlData.get('services', []):
         if not('image' in yamlData['services'][service]):
             continue
@@ -144,4 +148,29 @@ def AddDigestsToImageTags(composeFiles, outputComposeFile):
         else:
             yamlData['services'][service]['image'] = imageName
 
-    YamlTools.DumpYamlDataToFile(yamlData, outputComposeFile)
+
+def AddContainerNames(yamlData, prefix = None, subfix = None):
+    services = yamlData.get('services', [])
+    for service in services:
+        if not ('container_name' in yamlData['services'][service]):
+            containerName = service
+            if not(prefix is None):
+                containerName = prefix + containerName
+            if not(subfix is None):
+                containerName = containerName + subfix
+            else:
+                random.seed()
+                randomId = random.randint(0, 1000)
+                containerName = containerName + "_" + str(randomId)
+
+            yamlData['services'][service]['container_name'] = containerName
+
+
+def GetContainerNames(yamlData):
+    services = yamlData.get('services', [])
+    containerNames = []
+    for service in services:
+        if 'container_name' in yamlData['services'][service]:
+            containerNames.append(yamlData['services'][service]['container_name'])
+
+    return containerNames

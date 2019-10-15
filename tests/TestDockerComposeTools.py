@@ -48,12 +48,21 @@ class TestDockerComposeTools(unittest.TestCase):
         DockerComposeTools.ExecuteComposeTests([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')], ['my-service'])
         print('DONE COMPOSE TEST')
 
-    def test_f_AddDigestsToImageTags(self):
+    def test_g_ComposeTestWithContainerNamesNotSet(self):
+        print('COMPOSE TEST UNKNOWN NAME')
+        TerminalTools.LoadEnvironmentVariables(os.path.join(TestTools.TEST_SAMPLE_FOLDER, '.env'))
+        yamlData = YamlTools.GetYamlData([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.test.yml')])
+        DockerComposeTools.AddContainerNames(yamlData)
+        YamlTools.DumpYamlDataToFile(yamlData, os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.test.temp.yml'))
+        DockerComposeTools.ExecuteComposeTests([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.test.temp.yml')])
+        print('DONE COMPOSE TEST UNKNOWN NAME')
+
+    def test_h_AddDigestsToImageTags(self):
         print('COMPOSE ADD DIGESTS')
         DockerImageTools.PullImage('nginx')
         TerminalTools.LoadEnvironmentVariables(os.path.join(TestTools.TEST_SAMPLE_FOLDER, '.env'))
-        DockerComposeTools.AddDigestsToImageTags([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')], os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/digest/docker-compose.digests.yml'))
-        yamlData = YamlTools.GetYamlData([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'output/digest/docker-compose.digests.yml')], replaceEnvironmentVariablesMatches = False)
+        yamlData = YamlTools.GetYamlData([os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'docker-compose.yml')], replaceEnvironmentVariablesMatches=False)
+        DockerComposeTools.AddDigestsToImageTags(yamlData)
         for service in yamlData['services']:
             if 'my.service' in yamlData['services'][service]['image']:
                 self.assertEqual('my_repo/my.service:1.0.0', yamlData['services'][service]['image'])

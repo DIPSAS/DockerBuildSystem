@@ -101,5 +101,11 @@ class TestDockerImageTools(unittest.TestCase):
         self.assertTrue(len(jsonInfo['Id']) > 0)
         print('DONE GET CONTAINER INFO')
 
+    def test_m_GetLogsFromContainer(self):
+        print('GET CONTAINER LOGS')
+        logs = DockerImageTools.GetLogsFromContainer(TEST_CONTAINER_NAME)
+        self.assertTrue(len(logs) > 0)
+        print('DONE GET CONTAINER LOGS')
+
 if __name__ == '__main__':
     unittest.main()
