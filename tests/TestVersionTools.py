@@ -23,6 +23,14 @@ class TestVersionTools(unittest.TestCase):
         VersionTools.ExportVersionFromChangelogToEnvironment(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'CHANGELOG.v2.md'), 'VERSION')
         self.assertEqual(os.environ['VERSION'], '1.0.0')
 
+    def test_ExportMajorMinorVersionFromChangelogToEnvironment(self):
+
+        os.environ.clear()
+        VersionTools.ExportVersionFromChangelogToEnvironment(os.path.join(TestTools.TEST_SAMPLE_FOLDER, 'CHANGELOG.md'), 'VERSION', 'VERSIONMAJOR', 'VERSIONMINOR')
+        self.assertEqual(os.environ['VERSION'], '1.0.0')
+        self.assertEqual(os.environ['VERSIONMAJOR'], '1')
+        self.assertEqual(os.environ['VERSIONMINOR'], '0')
+
 
 if __name__ == '__main__':
     unittest.main()
