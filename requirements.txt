@@ -2,3 +2,4 @@ twine
 python-dotenv
 pyyaml
 wheel
+semantic-version

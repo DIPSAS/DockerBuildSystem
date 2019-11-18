@@ -58,6 +58,10 @@ TerminalTools.LoadEnvironmentVariables('path_to/variables.env')
 ```python
 VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "version")
 ```
+- Optionally export versionmajor and versionminor based on the top-most version from CHANGELOG.md file as an environment variable:
+```python
+VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "version", "versionmajor", "versionminor")
+```
 
 Please have a look at an example of use here:
 - https://github.com/DIPSAS/DockerBuildSystem/tree/master/example
