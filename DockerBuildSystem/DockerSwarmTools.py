@@ -2,11 +2,14 @@ from DockerBuildSystem import TerminalTools
 import subprocess
 
 
-def DeployStack(composeFile, stackName, environmentVariablesFiles = []):
+def DeployStack(composeFile, stackName, environmentVariablesFiles = [], withRegistryAuth = False):
     for environmentVariablesFile in environmentVariablesFiles:
         TerminalTools.LoadEnvironmentVariables(environmentVariablesFile)
     print("Deploying stack: " + stackName)
-    dockerCommand = "docker stack deploy -c " + composeFile + " " + stackName
+    dockerCommand = "docker stack deploy -c " + composeFile
+    if withRegistryAuth:
+        dockerCommand += " --with-registry-auth"
+    dockerCommand += " " + stackName
     TerminalTools.ExecuteTerminalCommands([dockerCommand], True)
 
 
