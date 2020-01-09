@@ -51,11 +51,14 @@ def DockerComposePush(composeFiles):
     TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
-def DockerComposePull(composeFiles):
+def DockerComposePull(composeFiles, dryRun=False):
     terminalCommand = "docker-compose"
     terminalCommand += MergeComposeFileToTerminalCommand(composeFiles)
     terminalCommand += " pull"
-    TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
+    if(dryRun):
+        print("would have called {}".format(terminalCommand))
+    else:
+        TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
 def TagImages(composeFile, newTag, dryRun = False):
@@ -91,14 +94,14 @@ def PublishDockerImages(composeFile, dryRun = False):
             print('Would have pushed {}'.format(sourceImage))
 
 def PromoteDockerImages(composeFile, targetTags, sourceFeed, targetFeed, user, password, dryRun = False):
-    DockerImageTools.DockerLogin(sourceFeed, user, password)
-    DockerComposePull([composeFile])
-    DockerImageTools.DockerLogout(sourceFeed)
+    DockerImageTools.DockerLogin(sourceFeed, user, password, dryRun)
+    DockerComposePull([composeFile], dryRun)
+    DockerImageTools.DockerLogout(sourceFeed, dryRun)
     
-    DockerImageTools.DockerLogin(targetFeed, user, password)
+    DockerImageTools.DockerLogin(targetFeed, user, password, dryRun)
     for tag in targetTags:
         PublishDockerImagesWithNewTag(composeFile, tag, sourceFeed, targetFeed, dryRun)
-    DockerImageTools.DockerLogout(targetFeed)
+    DockerImageTools.DockerLogout(targetFeed, dryRun)
 
 def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository= "", targetRepository="", dryRun=False):
     dockerComposeMap = YamlTools.GetYamlData([composeFile])
@@ -107,7 +110,7 @@ def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository= "", tar
         tagIndex = sourceImage.rfind(':')
         targetImage = sourceImage[:tagIndex+1] + str(newTag)
         if(len(sourceRepository) > 0 and len(targetRepository) > 0):
-            targetImage = targetImage.replace(sourceRepository, targetRepository)
+            targetImage = targetImage.replace(sourceRepository, targetRepository, 1)
         if(dryRun):
             print("Would have tagged image {} as {}".format(sourceImage, targetImage))
             print("Would have pushed image {}".format(targetImage))

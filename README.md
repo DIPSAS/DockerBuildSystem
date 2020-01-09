@@ -70,7 +70,7 @@ VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "ve
 - targetFeed - the feed you want to push to
 - user - used for authenticating to sourceFeed and targetFeed
 - password - used for authenticating to sourceFeed and targetFeed
-- dryRun - boolean. True if you want to do a dryRun, i.e. print what would have happened)
+- dryRun - boolean. True if you want to do a dryRun, i.e. print what would have happened
 
 Please have a look at an example of use here:
 - https://github.com/DIPSAS/DockerBuildSystem/tree/master/example

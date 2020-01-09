@@ -99,16 +99,22 @@ def GetLogsFromContainer(containerName):
     logs = str(TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand, includeErrorOutput=True).decode("utf-8"))
     return logs
 
-def DockerLogin(server, userName, password):
-    terminalCommand = 'docker login {0} -u {1} -p {2}'.format(server, userName, password)
-    TerminalTools.ExecuteTerminalCommands(
-        terminalCommands=[terminalCommand], 
-        raiseExceptionWithErrorCode=True, 
-        printCommand=False)
+def DockerLogin(server, userName, password, dryRun=False):
+    if(dryRun):
+        print("Would have logged in to {0} with user {1}".format(server, userName))
+    else:
+        terminalCommand = 'docker login {0} -u {1} -p {2}'.format(server, userName, password)
+        TerminalTools.ExecuteTerminalCommands(
+            terminalCommands=[terminalCommand], 
+            raiseExceptionWithErrorCode=True, 
+            printCommand=False)
 
-def DockerLogout(server):
-    terminalCommand = 'docker logout {0}'.format(server)
-    TerminalTools.ExecuteTerminalCommands(
-        terminalCommands=[terminalCommand], 
-        raiseExceptionWithErrorCode=True, 
-        printCommand=False)
+def DockerLogout(server, dryRun=False):
+    if(dryRun):
+        print("Would have logged out of {0}".format(server))
+    else:
+        terminalCommand = 'docker logout {0}'.format(server)
+        TerminalTools.ExecuteTerminalCommands(
+            terminalCommands=[terminalCommand], 
+            raiseExceptionWithErrorCode=True, 
+            printCommand=False)
