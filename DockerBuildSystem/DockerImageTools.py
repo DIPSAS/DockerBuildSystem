@@ -96,5 +96,5 @@ def GetContainerInfo(containerName):
 
 def GetLogsFromContainer(containerName):
     terminalCommand = 'docker logs {0}'.format(containerName)
-    logs = str(TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand).decode("utf-8"))
+    logs = str(TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand, includeErrorOutput=True).decode("utf-8"))
     return logs

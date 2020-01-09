@@ -37,12 +37,16 @@ def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False)
             print(errorMsg)
 
 
-def ExecuteTerminalCommandAndGetOutput(terminalCommand):
+def ExecuteTerminalCommandAndGetOutput(terminalCommand, includeErrorOutput = False):
     print("Executing: " + terminalCommand)
-    outputList = subprocess.Popen(terminalCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
+    stderr = None
+    if includeErrorOutput:
+        stderr = subprocess.PIPE
+    outputList = subprocess.Popen(terminalCommand, stdout=subprocess.PIPE, stderr=stderr, shell=True).communicate()
     output = b""
     for outputLine in outputList:
-        output += outputLine
+        if not(outputLine is None):
+            output += outputLine
     return output
 
 
