@@ -18,9 +18,11 @@ def PrintAvailableCommands(availableCommands):
         print(availableCommand)
 
 
-def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False):
+def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False, printCommand=True):
     for terminalCommand in terminalCommands:
-        print("Executing: " + terminalCommand)
+        if(printCommand):
+            print("Executing: " + terminalCommand)
+            
         keyboardInterrupt = False
         returnCode = 0
         try:

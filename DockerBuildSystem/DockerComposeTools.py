@@ -58,13 +58,16 @@ def DockerComposePull(composeFiles):
     TerminalTools.ExecuteTerminalCommands([terminalCommand], True)
 
 
-def TagImages(composeFile, newTag):
+def TagImages(composeFile, newTag, dryRun = False):
     dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')
         targetImage = sourceImage[:tagIndex+1] + str(newTag)
-        DockerImageTools.TagImage(sourceImage, targetImage)
+        if(not dryRun):
+            DockerImageTools.TagImage(sourceImage, targetImage)
+        else:
+            print('Would have tagged image {} as {}'.format(sourceImage, targetImage))
 
 
 def SaveImages(composeFile, outputFolder):
@@ -78,21 +81,39 @@ def SaveImages(composeFile, outputFolder):
         DockerImageTools.SaveImage(sourceImage, outputPath)
 
 
-def PublishDockerImages(composeFile):
+def PublishDockerImages(composeFile, dryRun = False):
     dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
-        DockerImageTools.PushImage(sourceImage)
+        if(not dryRun):
+            DockerImageTools.PushImage(sourceImage)
+        else:
+            print('Would have pushed {}'.format(sourceImage))
 
+def PromoteDockerImages(composeFile, targetTags, sourceFeed, targetFeed, user, password, dryRun = False):
+    DockerImageTools.DockerLogin(sourceFeed, user, password)
+    DockerComposePull([composeFile])
+    DockerImageTools.DockerLogout(sourceFeed)
+    
+    DockerImageTools.DockerLogin(targetFeed, user, password)
+    for tag in targetTags:
+        PublishDockerImagesWithNewTag(composeFile, tag, sourceFeed, targetFeed, dryRun)
+    DockerImageTools.DockerLogout(targetFeed)
 
-def PublishDockerImagesWithNewTag(composeFile, newTag):
+def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository= "", targetRepository="", dryRun=False):
     dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')
         targetImage = sourceImage[:tagIndex+1] + str(newTag)
-        DockerImageTools.TagImage(sourceImage, targetImage)
-        DockerImageTools.PushImage(targetImage)
+        if(len(sourceRepository) > 0 and len(targetRepository) > 0):
+            targetImage = targetImage.replace(sourceRepository, targetRepository)
+        if(dryRun):
+            print("Would have tagged image {} as {}".format(sourceImage, targetImage))
+            print("Would have pushed image {}".format(targetImage))
+        else:
+            DockerImageTools.TagImage(sourceImage, targetImage)
+            DockerImageTools.PushImage(targetImage)
 
 
 def ExecuteComposeTests(composeFiles, testContainerNames = None, removeTestContainers = True):
