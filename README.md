@@ -63,6 +63,15 @@ VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "ve
 VersionTools.ExportVersionFromChangelogToEnvironment("path_to/CHANGELOG.md", "version", "versionmajor", "versionminor")
 ```
 
+- to use the DockerComposeTools.PromoteDockerImages functionality, provide the following parameters:
+- composeFile - the compose file containing theimages that should be promoted
+- targetTags - the tags you want to use when you push the image to the new feed
+- sourceFeed - the feed you want to pull the images from (should match the compose file)
+- targetFeed - the feed you want to push to
+- user - used for authenticating to sourceFeed and targetFeed
+- password - used for authenticating to sourceFeed and targetFeed
+- dryRun - boolean. True if you want to do a dryRun, i.e. print what would have happened
+
 Please have a look at an example of use here:
 - https://github.com/DIPSAS/DockerBuildSystem/tree/master/example
 
@@ -80,6 +89,10 @@ Please have a look at an example of use here:
 1. Configure setup.py with new version.
 2. Build: python setup.py bdist_wheel
 3. Publish: twine upload dist/*
+
+## Test a new version locally
+1. Build: python setup.py bdist_wheel
+2. Install from local file with force-reinstall and no-cache-dir options to force reinstallation when you have changed the code without changing the version number: `python -m pip install path\to\yourgitrepo\DockerBuildSystem\dist\DockerBuildSystem-1.1.43-py2.py3-none-any.whl --force-reinstall --no-cache-dir`
 
 ## Run Unit Tests
 - python -m unittest
