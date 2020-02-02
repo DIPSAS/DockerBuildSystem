@@ -93,15 +93,22 @@ def PublishDockerImages(composeFile, dryRun = False):
         else:
             print('Would have pushed {}'.format(sourceImage))
 
-def PromoteDockerImages(composeFile, targetTags, sourceFeed, targetFeed, user, password, dryRun = False):
-    DockerImageTools.DockerLogin(sourceFeed, user, password, dryRun)
+
+def PromoteDockerImages(composeFile, targetTags, sourceFeed, targetFeed, user = None, password = None, logoutFromFeeds = False, dryRun = False):
+    userAndPasswordIsGiven = not(user is None or password is None)
+    if userAndPasswordIsGiven:
+        DockerImageTools.DockerLogin(sourceFeed, user, password, dryRun)
     DockerComposePull([composeFile], dryRun)
-    DockerImageTools.DockerLogout(sourceFeed, dryRun)
-    
-    DockerImageTools.DockerLogin(targetFeed, user, password, dryRun)
+    if userAndPasswordIsGiven and logoutFromFeeds:
+        DockerImageTools.DockerLogout(sourceFeed, dryRun)
+
+    if userAndPasswordIsGiven:
+        DockerImageTools.DockerLogin(targetFeed, user, password, dryRun)
     for tag in targetTags:
         PublishDockerImagesWithNewTag(composeFile, tag, sourceFeed, targetFeed, dryRun)
-    DockerImageTools.DockerLogout(targetFeed, dryRun)
+    if userAndPasswordIsGiven and logoutFromFeeds:
+        DockerImageTools.DockerLogout(targetFeed, dryRun)
+
 
 def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository= "", targetRepository="", dryRun=False):
     dockerComposeMap = YamlTools.GetYamlData([composeFile])
