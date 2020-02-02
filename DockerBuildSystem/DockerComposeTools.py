@@ -94,31 +94,31 @@ def PublishDockerImages(composeFile, dryRun = False):
             print('Would have pushed {}'.format(sourceImage))
 
 
-def PromoteDockerImages(composeFile, targetTags, sourceFeed, targetFeed, user = None, password = None, logoutFromFeeds = False, dryRun = False):
+def PromoteDockerImages(composeFile, targetTags, sourceFeed = None, targetFeed = None, user = None, password = None, logoutFromFeeds = False, dryRun = False):
     userAndPasswordIsGiven = not(user is None or password is None)
-    if userAndPasswordIsGiven:
+    if userAndPasswordIsGiven and not(sourceFeed is None):
         DockerImageTools.DockerLogin(sourceFeed, user, password, dryRun)
     DockerComposePull([composeFile], dryRun)
-    if userAndPasswordIsGiven and logoutFromFeeds:
+    if userAndPasswordIsGiven and logoutFromFeeds and not(sourceFeed is None):
         DockerImageTools.DockerLogout(sourceFeed, dryRun)
 
-    if userAndPasswordIsGiven:
+    if userAndPasswordIsGiven and not(targetFeed is None):
         DockerImageTools.DockerLogin(targetFeed, user, password, dryRun)
     for tag in targetTags:
         PublishDockerImagesWithNewTag(composeFile, tag, sourceFeed, targetFeed, dryRun)
-    if userAndPasswordIsGiven and logoutFromFeeds:
+    if userAndPasswordIsGiven and logoutFromFeeds and not(targetFeed is None):
         DockerImageTools.DockerLogout(targetFeed, dryRun)
 
 
-def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository= "", targetRepository="", dryRun=False):
+def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository = None, targetRepository = None, dryRun = False):
     dockerComposeMap = YamlTools.GetYamlData([composeFile])
     for service in dockerComposeMap['services']:
         sourceImage = dockerComposeMap['services'][service]['image']
         tagIndex = sourceImage.rfind(':')
         targetImage = sourceImage[:tagIndex+1] + str(newTag)
-        if(len(sourceRepository) > 0 and len(targetRepository) > 0):
+        if not(sourceRepository is None or targetRepository is None):
             targetImage = targetImage.replace(sourceRepository, targetRepository, 1)
-        if(dryRun):
+        if dryRun:
             print("Would have tagged image {} as {}".format(sourceImage, targetImage))
             print("Would have pushed image {}".format(targetImage))
         else:
