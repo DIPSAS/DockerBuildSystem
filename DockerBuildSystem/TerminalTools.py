@@ -18,9 +18,9 @@ def PrintAvailableCommands(availableCommands):
         print(availableCommand)
 
 
-def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False, printCommand=True):
+def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False, printCommand=False):
     for terminalCommand in terminalCommands:
-        if(printCommand):
+        if printCommand:
             print("Executing: " + terminalCommand)
             
         keyboardInterrupt = False
@@ -32,15 +32,19 @@ def ExecuteTerminalCommands(terminalCommands, raiseExceptionWithErrorCode=False,
         if keyboardInterrupt and raiseExceptionWithErrorCode:
             raise Exception("Exception thrown due to keyboardinterrupt")
         if returnCode > 0:
-            errorMsg = "Terminal command: '" + terminalCommand + \
-                "' executed with error return code: " + str(returnCode)
+            errorMsg = "Terminal command"
+            if printCommand:
+                errorMsg += " '" + terminalCommand + "'"
+            else:
+                errorMsg += " executed with error return code: " + str(returnCode)
             if raiseExceptionWithErrorCode:
                 raise Exception(errorMsg)
             print(errorMsg)
 
 
-def ExecuteTerminalCommandAndGetOutput(terminalCommand, includeErrorOutput = False):
-    print("Executing: " + terminalCommand)
+def ExecuteTerminalCommandAndGetOutput(terminalCommand, includeErrorOutput = False, printCommand=False):
+    if printCommand:
+        print("Executing: " + terminalCommand)
     stderr = None
     if includeErrorOutput:
         stderr = subprocess.PIPE
