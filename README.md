@@ -89,7 +89,8 @@ Please have a look at an example of use here:
 1. Configure setup.py with new version.
 2. Install build tools: `pip install twine wheel`
 3. Build: python setup.py bdist_wheel
-4. Publish: twine upload dist/*
+4. Check: twine check dist/*
+5. Publish: twine upload dist/*
 
 ## Test a new version locally
 1. Build: python setup.py bdist_wheel
