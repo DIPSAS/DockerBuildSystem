@@ -2,6 +2,7 @@ from DockerBuildSystem import TerminalTools
 import re
 import json
 
+
 def BuildImage(imageName, dockerfile = 'Dockerfile', context = '.'):
     dockerCommand = "docker build -f " + dockerfile + " -t " + imageName + " " + context
     TerminalTools.ExecuteTerminalCommands([dockerCommand], True)
@@ -99,6 +100,24 @@ def GetLogsFromContainer(containerName):
     logs = str(TerminalTools.ExecuteTerminalCommandAndGetOutput(terminalCommand, includeErrorOutput=True).decode("utf-8"))
     return logs
 
+
+def VerifyContainerExitCode(containerNames, assertExitCodes = False):
+    sumExitCodes = 0
+    sumErrorMsgs = ""
+    for containerName in containerNames:
+        exitCode = GetContainerExitCode(containerName)
+        sumExitCodes += exitCode
+        if exitCode > 0:
+            errorMsg = "Container '" + containerName + "' FAILED!\r\n"
+            sumErrorMsgs += errorMsg
+            print(errorMsg)
+        else:
+            print(containerName + " container finished with success.\r\n")
+    if sumExitCodes > 0 and assertExitCodes:
+        raise Exception(sumErrorMsgs)
+    return sumExitCodes, sumErrorMsgs
+
+
 def DockerLogin(server, userName, password, dryRun=False):
     if(dryRun):
         print("Would have logged in to {0} with user {1}".format(server, userName))
@@ -108,6 +127,7 @@ def DockerLogin(server, userName, password, dryRun=False):
             terminalCommands=[terminalCommand], 
             raiseExceptionWithErrorCode=True, 
             printCommand=False)
+
 
 def DockerLogout(server, dryRun=False):
     if(dryRun):

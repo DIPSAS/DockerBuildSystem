@@ -134,17 +134,7 @@ def ExecuteComposeTests(composeFiles, testContainerNames = None, removeTestConta
 
     DockerComposeBuild(composeFiles)
     DockerComposeUp(composeFiles)
-    sumExitCodes = 0
-    sumErrorMsgs = ""
-    for testContainerName in testContainerNames:
-        exitCode = DockerImageTools.GetContainerExitCode(testContainerName)
-        sumExitCodes += exitCode
-        if exitCode > 0:
-            errorMsg = "Container test '" + testContainerName + "' FAILED!\r\n"
-            sumErrorMsgs += errorMsg
-            print(errorMsg)
-        else:
-            print(testContainerName + " container test finished with success.\r\n")
+    sumExitCodes, sumErrorMsgs = DockerImageTools.VerifyContainerExitCode(testContainerNames)
     DockerComposeDown(composeFiles)
     if removeTestContainers:
         DockerComposeRemove(composeFiles)

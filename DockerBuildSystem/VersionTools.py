@@ -1,6 +1,7 @@
 from DockerBuildSystem import TerminalTools
 import semantic_version
 
+
 def ExportVersionFromChangelogToEnvironment(changelogFile, versionName, versionMajorName = None, versionMinorName = None):
     version = GetVersionFromChangelog(changelogFile)
     TerminalTools.ExportVariableToEnvironment(version, versionName)
