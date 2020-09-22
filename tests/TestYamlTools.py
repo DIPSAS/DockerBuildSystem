@@ -11,6 +11,7 @@ class TestYamlTools(unittest.TestCase):
         self.assertTrue('my-service' in YamlTools.GetProperties('services', yamlData))
         self.assertTrue('my_repo/my.service:1.0.0' == yamlData['services']['my-service']['image'])
         self.assertTrue('env_value' == yamlData['services']['my-service']['environment']['SOME_VARIABLE'])
+        self.assertTrue('default_value' == yamlData['services']['my-service']['environment']['SOME_VARIABLE_2'])
 
 
     def test_GetMergedYamlData(self):

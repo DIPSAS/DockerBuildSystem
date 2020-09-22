@@ -48,9 +48,12 @@ def ReplaceEnvironmentVariablesMatches(yamlString):
     matches = re.finditer(pattern, yamlString)
     for match in matches:
         envVar = match.group()[2:-1]
+        defaultValue = ''
+        if envVar.find(':-') >= 0:
+            defaultValue = envVar[envVar.find(':-')+2:]
         envValue = os.environ.get(envVar)
         if envValue == None:
-            envValue = ''
+            envValue = defaultValue
         yamlString = yamlString.replace(match.group(), envValue)
     return yamlString
 
