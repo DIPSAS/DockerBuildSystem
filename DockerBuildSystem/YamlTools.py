@@ -49,8 +49,10 @@ def ReplaceEnvironmentVariablesMatches(yamlString):
     for match in matches:
         envVar = match.group()[2:-1]
         defaultValue = ''
-        if envVar.find(':-') >= 0:
-            defaultValue = envVar[envVar.find(':-')+2:]
+        defaultValuePatternMatch = ':-'
+        if envVar.find(defaultValuePatternMatch) >= 0:
+            defaultValue = envVar[envVar.find(defaultValuePatternMatch)+len(defaultValuePatternMatch):]
+            envVar = envVar[:envVar.find(defaultValuePatternMatch)]
         envValue = os.environ.get(envVar)
         if envValue == None:
             envValue = defaultValue
