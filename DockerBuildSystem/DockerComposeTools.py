@@ -126,16 +126,18 @@ def PublishDockerImagesWithNewTag(composeFile, newTag, sourceRepository = None, 
             DockerImageTools.PushImage(targetImage)
 
 
-def ExecuteComposeTests(composeFiles, testContainerNames = None, removeTestContainers = True):
+def ExecuteComposeTests(composeFiles, testContainerNames = None, removeTestContainers = True, buildCompose = True, downCompose = True):
     if testContainerNames is None:
         TerminalTools.LoadDefaultEnvironmentVariablesFile()
         yamlData = YamlTools.GetYamlData(composeFiles)
         testContainerNames = GetContainerNames(yamlData)
 
-    DockerComposeBuild(composeFiles)
+    if buildCompose:
+        DockerComposeBuild(composeFiles)
     DockerComposeUp(composeFiles)
     sumExitCodes, sumErrorMsgs = DockerImageTools.VerifyContainerExitCode(testContainerNames)
-    DockerComposeDown(composeFiles)
+    if downCompose:
+        DockerComposeDown(composeFiles)
     if removeTestContainers:
         DockerComposeRemove(composeFiles)
     if sumExitCodes > 0:
