@@ -4,6 +4,10 @@
 [![Build Status](https://travis-ci.com/DIPSAS/DockerBuildSystem.svg?branch=master)](https://travis-ci.com/DIPSAS/DockerBuildSystem)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
+# !DEPRECATED!
+Please follow new source: 
+- https://github.com/hansehe/DockerBuildSystem
+
 A simple library for handling docker commands with python.
 
 ## Install Or Upgrade
